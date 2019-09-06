@@ -1,0 +1,447 @@
+= VIm for Dummies
+
+:toc:
+
+== Normal-Modus, Insert-Modus und Visueller Modus (nur VIm) und Kommando-Modus
+
+VI und auch VIm starten im Normal-Modus. In diesem sind die Tasten
+mit Befehlen zum Navigieren und Editieren belegt. 
+
+In den Normal-Modus kommt man aus den andern Modi per "ESC"-Taste.
+
+Im Insert-Modus verhält sich VIm wie ein normaler interaktiver Editor:
+Es kann Text eingegeben werden. Im Gegensatz zu VI unterstützt VIm im
+Insert-Modus die Pfeiltasten zum navigieren und Backspace zum löschen.
+
+Aus dem Normal-Modus kommt man in den Insert-Modus u.a. per `i`-Taste.
+
+Im den 3 visuellen Modi können Text-Blöcke ausgewählt werden und auf
+diese dann Befehle angewandt werden.
+
+Aus dem Normal-Modus kommt man in den Visuellen-Modus u.a. per `v`-Taste.
+
+[ditaa]
+----
+                                                              
+            ESC >    +--------------------+   < ESC           
+       +-------------|    Normal Mode     |-------------+     
+       |             +--------------------+             |     
+       |                      ^ |                       |     
+       |                     ESC|                       |     
+       |                        |                       |     
+       |                        |                       |     
+       |                        |                       |     
+       |                        |                       |     
+       | i,a,c,...              |           v,V,ctrl-v  |     
+  +--------------------+ c,I,...|       +--------------------+
+  |    Insert Mode     |--------|-------|     Visual Mode    |
+  +--------------------+        |       +--------------------+
+                                |:                 |          
+                                |                  |          
+                     +--------------------+ :      |          
+                     |    Command Mode    |--------+          
+                     +--------------------+                   
+                                                              
+----
+
+.First things first:
+[IMPORTANT]
+====
+VI(m) schließen und die aktuelle Datei speichern kann man, indem man im
+Normal-Modus `:wq` eingibt. Möchte man die Änderungen nicht speichern
+gibt man statt dessen `:q!` ein. Möchte man die Datei unter einem anderen
+Namen speichern, kann man das per `:w <name>` tun.
+====
+
+=== Der Normal-Modus
+
+Im Normal-Modus sind die Tasten mit Befehlen zum Navigieren und Editieren
+belegt.
+
+==== Navigieren
+
+Die grundlegendsten Befehle zum Navigieren sind:
+
+* `h`: nach links
+* `j`: nach unten
+* `k`: nach oben
+* `l`: nach rechts
+
+[EXAMPLE]
+====
+Hier kannst Du sie ausprobieren:
+
+ -> llllj#####
+    ####j#llll ->
+    #jhhh#k###
+    #lllllk###
+
+====
+
+[NOTE]
+====
+Anstatt mehrfach den gleichen Befehl einzugeben, kannst Du
+dem Befehl die Anzahl der gewünschten Wiederholungen voranstellen.
+
+Bsp: `4l` - Navigiert 4 Zeichen nach rechts
+
+====
+
+VI(m) "versteht" zusätztlich zu einzelnen Zeichen die Konzepte Wort, 
+Zeile, Satz, Block und Seite
+
+* Wortweise navigieren:
+** `w`: "word" - Zum Anfang des nächsten Worts
+** `b`: "begin" - Zum Wort-Anfang / ein Wort zurück
+** `e`: "end" - Zum Wort-Ende / ein Wort weiter
+
+[EXAMPLE]
+====
+Hier kannst Du es probieren:
+
+ w____ w____ e___e w___b ______
+
+====
+
+* Zeilenweise navigieren:
+** `+`: Zum Anfang der nächsten Zeile
+** `-`: Zum Anfang der vorherigen Zeile
+** `^`: Zum Zeilenanfang
+** `$`: Zum Zeilenende
+** `t<a>`: "till" - Vorwärts bis vor dem nächsten Vorkommen von "a" (exklusiv)
+** `T<a>`: "till" - Rückwärts bis vor das nächste Vorkommen von "a" (exklusiv)
+** `f<a>`: "find" - Vorwärts bis zum nächsten Vorkommen von "a" (inklusiv)
+** `F<a>`: "find" - Rückwärts bis zum nächsten Vorkommen von "a" (inklusiv)
+** `<nnn>G`: "go" - Zur Zeile nnn
+** `ctrl-o`: Rückwärts durch die Positionen navigieren
+** `ctrl-i`: Vorwärts durch die Positionen navigieren
+** `''`: zur letzten Position zurückspringen
+** `gg`: Zum Anfang der Datei
+** `G`: Zum Ende der Datei
+
+* Satz- und Blockweise navigieren:
+** `)`: Zum Satz-Ende
+** `(`: Zum Satz-Anfang
+** `}`: Zum Block-Ende
+** `{`: Zum Block-Anfang
+** `%`: Zwischen öffnendem und schließendem Zeichen springen (Bsp: (), []. {})
+
+* Seitenweise navigieren:
+** `H`: Zum Seitenanfang
+** `M`: Zur Seitenmitte
+** `L`: Zum Seitenende
+** `ctrl-e`: Seite nach oben schieben
+** `ctrl-y`: Seite nach unten schieben
+
+[EXAMPLE]
+====
+Hier kannst Du es probieren:
+ 
+ Dies ist ein Satz. Und hier ist noch einer! 
+ Und was ist das? Eine Funktion:
+  
+ def func(p1, p2) {
+   if p1 {
+     foo(p2);
+   }
+   bla(p1 and p2)
+ }
+
+====
+
+* Markierungen setzen und annavigieren:
+** `m<a>`: "mark" - markieren aktuelle Position als Markierung a.
+** `'<a>`: gehe in die Zeile mit Markierung a
+** ``<a>`: gehe exakt zu Markierung a.
+
+* Sonstiges:
+** ga: Zeige den Ascii-Code des Zeichens unter dem Cursor an
+** g8: Zeige den UTF-8 Code des Zeichens unter dem Cursor an
+
+==== Editieren
+
+* `y`: "yank" - kopiert in die Zwischenablage
+** `yy`: kopiert die aktuelle Zeile
+** `yw`: "yank word" - kopiert bis zum Wortende
+** `yt=`: "yank till =" Alles bis zum nächsten "=" kopieren
+** `yi"`: "yank in "" - kopiert den gesamten Text zwischen Quotes
+* `d`: "delete" - löscht und kopiert in die Zwischenablage
+** `dd`: löscht die aktuelle Zeile
+** `dw`: "delete word" - löscht bis zum Wortende
+** `d$`, `D`: bis zum Zeilenende löschen
+** `d}`: bis zum Blockende löschen
+** `dG`: bis zum Dateiende löschen
+** `df`; "delete find ;" alles in der aktuellen Zeile bis inklusive dem nächsten ";" löschen
+** `da}`: "delete all }" - löscht den aktuellen durch "{ }" gegebenen Block. Funktioniert entsprechend mit anderen Klammern.
+** `dit`: "delete in tag" - löscht den Inhalt des aktuellen Tags (HTML, XML)
+** `dat`: "delete all tag" - löscht den aktuellen Tags (HTML, XML)
+* `p`: "paste" - aus der Zwischenablage nach dem Cursor einfügen
+* `P`: "paste" - aus der Zwischenablage vor dem Cursor einfügen
+* `u`: "undo" - macht die letzte Änderung rückgängig
+* `ctrl-r`: "redo" - stellt eine Änderung nach undo wieder her
+* `=`: formatiert den Block
+** `==`: aktuelle Zeile formatieren
+* `gq`: Zeilen im Block umbrechen
+** `gqgq`: aktuelle Zeile umbrechen
+
+[EXAMPLE]
+====
+Hier kannst Du es probieren:
+
+ <tag1>
+   <tag2>some text</tag2>
+ </tag1>
+
+====
+
+==== Suchen
+
+* `/`: Vorwärts nach Text/RegEx-Pattern suchen
+* `?`: Rückwärts nach Text/RegEx-Pattern suchen
+* `*`: Vorwärts nach dem Wort unter dem Cursor suchen
+* `#`: Rückwärts nach dem Wort unter dem Cursor suchen
+* `n`: die vorherige Suche wiederholen
+* `N`: die vorherige Suche in gegengesetzte Richtung wiederholen
+
+==== Command-Mode
+
+Per Doppelpunkt kann der Command-Mode innerhalb des Normal-Modus aktiviert werden.
+In diesem können in der Fußzeile komplexe Befehle eingegeben werden.
+
+Ein paar hilfreiche Befehle sind:
+
+* `set number`: Zeigt Zeilennummern an
+* `set nonumber`: Blendet die Zeilennummern aus
+* `set list`: Zeigt Sonderzeichen an
+* `set nolist`: Blendet Sonderzeichen aus
+* `nnn`: Gehe zu Zeile nnn
+* `!<cmd>`: Ruft den Befehl cmd in einer Shell auf
+* `set fileencoding`: Setzt das Encoding für die aktuelle Datei
+* `s/<pattern>/<replacement>/`: "substitute pattern with replacement" - alle pattern durch replace ersetzen
+* `g/<pattern>/d`: "grep pattern delete" - Alle Zeilen löschen, die pattern entsprechen
+* `v/<pattern>/d`: "inVerse pattern delete" - Alle Zeilen löschen, die nicht pattern entsprechen
+* `sort`: Alle Zeilen im Block sortieren
+* `e`: "edit" - läd die Datei neu
+
+.Capture-Groups in s/<pattern>/<replacement>/ verwenden
+[NOTE]
+====
+In den Patterns können Capturing-Groups verwendet werden, auf die im
+Replacement referenziert werden kann. Diese werden durch escapete Klammern
+markiert `\( \)` und durch die escapete Gruppennummer referenziert, z.B. `\1`.
+
+Bsp: 
+Lösche alle Zeilen, die keine Funktions-Definitionen enthalten und extrahiere
+den Funktionsnamen ohne Parameterliste:
+
+ :%v/^ *def /d
+ :%s/^ *def \([^(]*\).*/\1/
+
+====
+
+Befehle, die den Text verändern, also nicht nur die Konfiguration von VIm betreffen,
+beziehen sich im Standardfall auf die aktuelle Zeile. Möchte man mehr als nur die eine
+Zeile bearbeiten, muss man den Block dem Befehl voranstellen (Bsp: `.,+3 g/xx/d` - von
+der aktuellen Zeile bis 3 Zeilen danach alle Zeilen löschen in denen xx vorkommt)
+
+* Beispiele für Blockdefinitionen:
+** `%`: die gesamte Datei
+** `5,10`: Zeilen 5 bis 10
+** `.,+50`: die nächsten 50 Zeilen
+** per visuellem Modus: Mit dem visuellen Modus kann ein Bereich ausgewählt werden
+
+[EXAMPLE]
+====
+Stelle den Cursor auf die Zeile START und gib dann ein `:+2,+9 sort`, um die Wörter
+im Block zu sortieren.
+
+ START:
+
+ 8
+ unsortierte
+ Wörter
+ die
+ gerne
+ sortiert
+ werden
+ sollen
+
+====
+
+[EXAMPLE]
+====
+Stelle den Cursor auf die Zeile START und gib dann `:r !ls` ein, um den Inhalt des
+Verzeichnisses einzufügen:
+
+ START
+
+====
+
+[EXAMPLE]
+====
+Stelle den Cursor auf die erste Zeile des folgenden Blocks und gib dann `:.,+4 s/pp/../g`
+ein, um alle Vorkommen von pp durch .. zu ersetzten.
+
+ ppqppqpqpppq
+ pqpqpppqpqpp
+ pqpqqpqpqpqp
+ pqpqqpqpqppq
+ pqppqpqppqpq
+
+====
+
+=== Der Insert-Modus
+
+Im Insert-Modus verhält sich VI(m) wie andere Editoren auch. Text kann über die
+Tastatur eingegeben werden. In VIm stehen dabei im Gegensatz zum VI auch
+Backspace und die Pfeiltasten zur Verfügung.
+
+Vom Normal-Modus kommt man auf mehreren Wegen in den Insert-Modus:
+
+* `i`: insert - Vor der aktuellen Position in den Insert-Modus wechseln
+* `a`: append - Hinter der aktuellen Position in den Insert-Modus wechseln
+* `I`: insert - Am Zeilenanfang in den Insert-Modus wechseln
+* `A`: append - Am Zeilenende in den Insert-Modus wechseln
+* `o`: open new line - Eine neue Zeile unterhalb einfügen und in den Insert-Modus wechseln
+* `O`: open new line - Eine neue Zeile oberhalb einfügen und in den Insert-Modus wechseln
+* `r`: replace - Für die Eingabe eines Zeichens in den Insert-Modus wechseln
+* `c`: change - Funktioniert wie `d`, wechselt aber anschließend in den Insert-Modus (Bsp: `cw`)
+
+Innerhalb des Insert-Modus gibt es einige spezielle Tastenkombinationen, über
+die verwendet werden können:
+
+* `ctrl-o`: Für einen Befehl in den Normal-Modus wechseln
+* `ctrl-v`: Sonderzeichen visuell eingeben
+
+=== Der Visuelle-Modus
+
+Mit dem visuellen Modus können Blöcke visuell ausgewählt werden, auf denen dann
+Befehle ausgeführt werden können.
+
+* `v`: Zeichenweise visueller Modus
+* `V`: Zeilenweise visueller Modus
+* `ctrl-v`: Visueller Block-Modus
+
+Hat man auf diese Weise einen Block markiert, kann man auf den markierten
+Bereich durch Drücken von `:` den Commando-Modus nutzen, um darauf Befehle
+auszuführen.
+
+Außerdem besteht die Möglichkeit auf dem markierten Bereich weitere Befehle zum
+Bearbeiten auszuführen:
+
+* `r<a>`: "replace" - ersetze jedes Zeichen im markierten Bereich durch das Zeichen a.
+* `c`: "change" - ersetze den markierten Bereich
+* `d`: "delete" - lösche den markierten Bereich
+
+Im visuellen Block-Modus gibt es zusätzlich die Möglichkeit in mehreren Zeilen
+gleichzeitig Text einzufügen, indem man zunächst den Block auswählt und dann
+mit `I` (großes i) das Einfügen beginnt. Der eingegebene Text ist dabei zunächst
+nur in der aktuellen Zeile sichtbar, wird aber nach Abschluß durch Drücken von
+ESC in allen markierten Zeilen eingefügt.
+
+== Weitere spannende Konzepte
+
+=== Macros
+
+* `q<macro>`, `q`
+* `@<macro>`
+
+=== Buffer
+
+* `:ls`
+* `:buffer`
+
+=== Registers
+
+* `:registers`
+
+=== Windows
+
+* `:split`
+* `:vsplit`
+* `ctrl-w h`,`j`,`k`,`l`
+
+=== Plugins
+
+==== Plugin Manager "Vundle"
+
+siehe https://github.com/VundleVim/Vundle.vim
+
+===== Setup
+
+ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+Beispielkonfiguration `~/.vimrc`:
+
+ set nocompatible
+ filetype off 
+ 
+ set rtp+=~/.vim/bundle/Vundle.vim
+ call vundle#begin()
+ 
+ Plugin 'VundleVim/Vundle.vim'
+ 
+ Plugin 'airblade/vim-rooter'
+ Plugin 'artur-shaik/vim-javacomplete2'
+ Plugin 'ervandew/supertab'
+ Plugin 'godlygeek/tabular'
+ Plugin 'garbas/vim-snipmate'
+ Plugin 'MarcWeber/vim-addon-mw-utils'
+ Plugin 'tomtom/tlib_vim'
+ Plugin 'scrooloose/nerdtree'
+ Plugin 'davidhalter/jedi-vim'
+ Plugin 'vim-syntastic/syntastic'
+ Plugin 'derekwyatt/vim-scala'
+ Plugin 'timcharper/textile.vim'
+ Plugin 'tpope/vim-cucumber.git'
+ Plugin 'tpope/vim-fugitive'
+ Plugin 'tpope/vim-git'
+ Plugin 'tpope/vim-haml'
+ Plugin 'tpope/vim-markdown'
+ Plugin 'tpope/vim-rails'
+ Plugin 'tpope/vim-repeat'
+ Plugin 'tpope/vim-sensible'
+ Plugin 'tpope/vim-sleuth'
+ Plugin 'tpope/vim-surround'
+ Plugin 'tpope/vim-vividchalk'
+ Plugin 'altercation/vim-colors-solarized'
+ Plugin 'eshock/vim-matchit'
+ Plugin 'tsaleh/vim-shoulda'
+ Plugin 'rust-lang/rust.vim'
+ Plugin 'vim-scripts/Gist.vim'
+ Plugin 'pearofducks/ansible-vim'
+ Plugin 'editorconfig/editorconfig-vim'
+
+ call vundle#end()
+ filetype plugin indent on
+
+ " Set colorscheme
+ set t_Co=256
+ set background=dark
+ colorscheme solarized
+ call togglebg#map("<F5>")
+
+ " Configure statusline
+ set statusline+=%#warningmsg#
+ set statusline+=%{SyntasticStatuslineFlag()}
+ set statusline+=%*
+ 
+ set relativenumber
+ set number
+ 
+ set showbreak=↪\
+ set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+
+ " Configure keymappings
+ map <F2> :NERDTreeToggle<CR>
+
+ " Configure properties
+ let g:SuperTabDefaultCompletionType = "context"
+ let g:syntastic_always_populate_loc_list = 1
+ let g:syntastic_auto_loc_list = 1
+ let g:syntastic_check_on_open = 1
+ let g:syntastic_check_on_wq = 0
+
+Plugins installieren:
+Die neue .vimrc mit vim öffnen und `:PluginInstall` ausführen.
+
