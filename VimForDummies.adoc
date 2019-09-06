@@ -92,8 +92,8 @@ Zeile, Satz, Block und Seite
 
 * Wortweise navigieren:
 ** `w`: "word" - Zum Anfang des nächsten Worts
-** `b`: "begin" - Zum Wort-Anfang / ein Wort zurück
-** `e`: "end" - Zum Wort-Ende / ein Wort weiter
+** `b`: "begin" - Zum vorherigen Wort-Anfang
+** `e`: "end" - Zum nächsten Wort-Ende
 
 [EXAMPLE]
 ====
@@ -347,23 +347,24 @@ ESC in allen markierten Zeilen eingefügt.
 
 === Macros
 
-* `q<macro>`, `q`
-* `@<macro>`
+* `q<macro>`, `q`: Macro aufnehmen
+* `@<macro>`: Macro ausführen
 
 === Buffer
 
-* `:ls`
-* `:buffer`
+* `:ls`: offene Buffer anzeigen
+* `:buffer`: 
+* `:edit <file>`: file zum Edieren öffnen
 
 === Registers
 
-* `:registers`
+* `:registers`: Registerinhalte anzeigen
 
 === Windows
 
-* `:split`
-* `:vsplit`
-* `ctrl-w h`,`j`,`k`,`l`
+* `:split`: Fenster horizontal splitten
+* `:vsplit`: Fenster vertikal splitten
+* `ctrl-w h`,`j`,`k`,`l`: Zwischen Fenstern wechseln
 
 === Plugins
 
