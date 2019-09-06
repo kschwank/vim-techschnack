@@ -226,6 +226,7 @@ Ein paar hilfreiche Befehle sind:
 * `v/<pattern>/d`: "inVerse pattern delete" - Alle Zeilen löschen, die nicht pattern entsprechen
 * `sort`: Alle Zeilen im Block sortieren
 * `e`: "edit" - läd die Datei neu
+* `r`: "read" - liest die Ausgabe eines Befehls ein
 
 .Capture-Groups in s/<pattern>/<replacement>/ verwenden
 [NOTE]
@@ -306,6 +307,7 @@ Vom Normal-Modus kommt man auf mehreren Wegen in den Insert-Modus:
 * `a`: append - Hinter der aktuellen Position in den Insert-Modus wechseln
 * `I`: insert - Am Zeilenanfang in den Insert-Modus wechseln
 * `A`: append - Am Zeilenende in den Insert-Modus wechseln
+* `s`: substitute - Zeichen löschen und in den Insert-Modus wechseln
 * `o`: open new line - Eine neue Zeile unterhalb einfügen und in den Insert-Modus wechseln
 * `O`: open new line - Eine neue Zeile oberhalb einfügen und in den Insert-Modus wechseln
 * `r`: replace - Für die Eingabe eines Zeichens in den Insert-Modus wechseln
