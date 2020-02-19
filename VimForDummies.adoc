@@ -5,7 +5,7 @@
 == Normal-Modus, Insert-Modus und Visueller Modus (nur VIm) und Kommando-Modus
 
 VI und auch VIm starten im Normal-Modus. In diesem sind die Tasten
-mit Befehlen zum Navigieren und Editieren belegt. 
+mit Befehlen zum Navigieren und Editieren belegt.
 
 In den Normal-Modus kommt man aus den andern Modi per "ESC"-Taste.
 
@@ -20,8 +20,8 @@ diese dann Befehle angewandt werden.
 
 Aus dem Normal-Modus kommt man in den Visuellen-Modus u.a. per `v`-Taste.
 
-[ditaa]
-----
+.Vim Modes
+....
                                                               
             ESC >    +--------------------+   < ESC           
        +-------------|    Normal Mode     |-------------+     
@@ -42,7 +42,7 @@ Aus dem Normal-Modus kommt man in den Visuellen-Modus u.a. per `v`-Taste.
                      |    Command Mode    |--------+          
                      +--------------------+                   
                                                               
-----
+....
 
 .First things first:
 [IMPORTANT]
@@ -67,7 +67,7 @@ Die grundlegendsten Befehle zum Navigieren sind:
 * `k`: nach oben
 * `l`: nach rechts
 
-[EXAMPLE]
+[NOTE]
 ====
 Hier kannst Du sie ausprobieren:
 
@@ -78,7 +78,7 @@ Hier kannst Du sie ausprobieren:
 
 ====
 
-[NOTE]
+[TIP]
 ====
 Anstatt mehrfach den gleichen Befehl einzugeben, kannst Du
 dem Befehl die Anzahl der gewünschten Wiederholungen voranstellen.
@@ -87,15 +87,15 @@ Bsp: `4l` - Navigiert 4 Zeichen nach rechts
 
 ====
 
-VI(m) "versteht" zusätztlich zu einzelnen Zeichen die Konzepte Wort, 
+VI(m) "versteht" zusätztlich zu einzelnen Zeichen die Konzepte Wort,
 Zeile, Satz, Block und Seite
 
 * Wortweise navigieren:
 ** `w`: "word" - Zum Anfang des nächsten Worts
-** `b`: "begin" - Zum vorherigen Wort-Anfang
-** `e`: "end" - Zum nächsten Wort-Ende
+** `b`: "begin" - Zum Wort-Anfang / ein Wort zurück
+** `e`: "end" - Zum Wort-Ende / ein Wort weiter
 
-[EXAMPLE]
+[NOTE]
 ====
 Hier kannst Du es probieren:
 
@@ -112,6 +112,8 @@ Hier kannst Du es probieren:
 ** `T<a>`: "till" - Rückwärts bis vor das nächste Vorkommen von "a" (exklusiv)
 ** `f<a>`: "find" - Vorwärts bis zum nächsten Vorkommen von "a" (inklusiv)
 ** `F<a>`: "find" - Rückwärts bis zum nächsten Vorkommen von "a" (inklusiv)
+** `;`   : Letztes f-, F-, t- oder T-Kommando wiederholen
+** `,`   : Letztes f-, F-, t- oder T-Kommando in entgegengesetzter Richtung wiederholen
 ** `<nnn>G`: "go" - Zur Zeile nnn
 ** `ctrl-o`: Rückwärts durch die Positionen navigieren
 ** `ctrl-i`: Vorwärts durch die Positionen navigieren
@@ -130,20 +132,23 @@ Hier kannst Du es probieren:
 ** `H`: Zum Seitenanfang
 ** `M`: Zur Seitenmitte
 ** `L`: Zum Seitenende
-** `ctrl-f`: Eine Seite vorwärts (forward)
-** `ctrl-b`: Eine Seite rückwärts (backward)
-** `ctrl-d`: Eine halbe Seite vorwärts (down)
-** `ctrl-u`: Eine halbe Seite rückwärts (up)
-** `ctrl-e`: Seite nach oben schieben
-** `ctrl-y`: Seite nach unten schieben
+** `ctrl-e`: Seite um eine Zeile nach oben schieben
+** `ctrl-y`: Seite um eine Zeile nach unten schieben
+** `ctrl-f`: Eine Seite weiter
+** `ctrl-y`: Eine Seite zurück
+** `ctrl-d`: "down" - Eine halbe Seite weiter
+** `ctrl-u`: "up" - Eine halbe Seite zurück
+** `zt`: "top" - Weiter bis aktuelle Zeile am Seitenanfang steht
+** `zz`: Weiter oder zurück bis aktuelle Zeile in Seitenmitte steht
+** `zb`: "bottom" - Zurück bis aktuelle Zeile am Seitenende steht
 
-[EXAMPLE]
+[NOTE]
 ====
 Hier kannst Du es probieren:
- 
- Dies ist ein Satz. Und hier ist noch einer! 
+
+ Dies ist ein Satz. Und hier ist noch einer!
  Und was ist das? Eine Funktion:
-  
+
  def func(p1, p2) {
    if p1 {
      foo(p2);
@@ -173,22 +178,34 @@ Hier kannst Du es probieren:
 ** `dd`: löscht die aktuelle Zeile
 ** `dw`: "delete word" - löscht bis zum Wortende
 ** `d$`, `D`: bis zum Zeilenende löschen
+** `d0`: bis zum Zeilenanfang löschen
 ** `d}`: bis zum Blockende löschen
 ** `dG`: bis zum Dateiende löschen
 ** `df`; "delete find ;" alles in der aktuellen Zeile bis inklusive dem nächsten ";" löschen
 ** `da}`: "delete all }" - löscht den aktuellen durch "{ }" gegebenen Block. Funktioniert entsprechend mit anderen Klammern.
 ** `dit`: "delete in tag" - löscht den Inhalt des aktuellen Tags (HTML, XML)
 ** `dat`: "delete all tag" - löscht den aktuellen Tags (HTML, XML)
+* `c`: "change" - wie d, wechselt aber anschließend in den Insert-Modus
 * `p`: "paste" - aus der Zwischenablage nach dem Cursor einfügen
 * `P`: "paste" - aus der Zwischenablage vor dem Cursor einfügen
 * `u`: "undo" - macht die letzte Änderung rückgängig
 * `ctrl-r`: "redo" - stellt eine Änderung nach undo wieder her
-* `=`: formatiert den Block
+* `=`: formatiert den ausgewählten Bereich
 ** `==`: aktuelle Zeile formatieren
-* `gq`: Zeilen im Block umbrechen
+* `gq`: Ausgewählte Zeilen umbrechen
 ** `gqgq`: aktuelle Zeile umbrechen
+* `x`: Zeichen unter dem Cursor löschen
+* `X`: Zeichen vor dem Cursor löschen
+* `J`: Nachfolgende Zeile an aktuelle Zeile anfügen
 
-[EXAMPLE]
+[TIP]
+====
+* Ein Wort ist für VIm eine Zeichenfolge ohne Leerzeichen.
+* Ein Block ist für VIm eine Liste von nicht-leeren Zeilen.
+
+====
+
+[NOTE]
 ====
 Hier kannst Du es probieren:
 
@@ -214,6 +231,8 @@ In diesem können in der Fußzeile komplexe Befehle eingegeben werden.
 
 Ein paar hilfreiche Befehle sind:
 
+* `h` <sss>: "help" - Zeigt Hilfe zu <sss> an
+* `q`: Aktuelle Datei/Buffer schließen
 * `set number`: Zeigt Zeilennummern an
 * `set nonumber`: Blendet die Zeilennummern aus
 * `set list`: Zeigt Sonderzeichen an
@@ -226,16 +245,17 @@ Ein paar hilfreiche Befehle sind:
 * `v/<pattern>/d`: "inVerse pattern delete" - Alle Zeilen löschen, die nicht pattern entsprechen
 * `sort`: Alle Zeilen im Block sortieren
 * `e`: "edit" - läd die Datei neu
-* `r`: "read" - liest die Ausgabe eines Befehls ein
+* `paste`: Wechselt in den Paste-Modus, d.h. kein automatischen Einrücken beim einfügen, etc
+* `nopaste`: Wechselt in den normalen Modus
 
 .Capture-Groups in s/<pattern>/<replacement>/ verwenden
-[NOTE]
+[TIP]
 ====
 In den Patterns können Capturing-Groups verwendet werden, auf die im
 Replacement referenziert werden kann. Diese werden durch escapete Klammern
 markiert `\( \)` und durch die escapete Gruppennummer referenziert, z.B. `\1`.
 
-Bsp: 
+Bsp:
 Lösche alle Zeilen, die keine Funktions-Definitionen enthalten und extrahiere
 den Funktionsnamen ohne Parameterliste:
 
@@ -255,7 +275,7 @@ der aktuellen Zeile bis 3 Zeilen danach alle Zeilen löschen in denen xx vorkomm
 ** `.,+50`: die nächsten 50 Zeilen
 ** per visuellem Modus: Mit dem visuellen Modus kann ein Bereich ausgewählt werden
 
-[EXAMPLE]
+[NOTE]
 ====
 Stelle den Cursor auf die Zeile START und gib dann ein `:+2,+9 sort`, um die Wörter
 im Block zu sortieren.
@@ -273,7 +293,7 @@ im Block zu sortieren.
 
 ====
 
-[EXAMPLE]
+[NOTE]
 ====
 Stelle den Cursor auf die Zeile START und gib dann `:r !ls` ein, um den Inhalt des
 Verzeichnisses einzufügen:
@@ -282,7 +302,7 @@ Verzeichnisses einzufügen:
 
 ====
 
-[EXAMPLE]
+[NOTE]
 ====
 Stelle den Cursor auf die erste Zeile des folgenden Blocks und gib dann `:.,+4 s/pp/../g`
 ein, um alle Vorkommen von pp durch .. zu ersetzten.
@@ -307,7 +327,6 @@ Vom Normal-Modus kommt man auf mehreren Wegen in den Insert-Modus:
 * `a`: append - Hinter der aktuellen Position in den Insert-Modus wechseln
 * `I`: insert - Am Zeilenanfang in den Insert-Modus wechseln
 * `A`: append - Am Zeilenende in den Insert-Modus wechseln
-* `s`: substitute - Zeichen löschen und in den Insert-Modus wechseln
 * `o`: open new line - Eine neue Zeile unterhalb einfügen und in den Insert-Modus wechseln
 * `O`: open new line - Eine neue Zeile oberhalb einfügen und in den Insert-Modus wechseln
 * `r`: replace - Für die Eingabe eines Zeichens in den Insert-Modus wechseln
@@ -336,8 +355,11 @@ Außerdem besteht die Möglichkeit auf dem markierten Bereich weitere Befehle zu
 Bearbeiten auszuführen:
 
 * `r<a>`: "replace" - ersetze jedes Zeichen im markierten Bereich durch das Zeichen a.
-* `c`: "change" - ersetze den markierten Bereich
-* `d`: "delete" - lösche den markierten Bereich
+* `c`: "change"    - ersetze den markierten Bereich
+* `d`: "delete"    - lösche den markierten Bereich
+* `y`: "yank"      - kopiere den markierten Bereich
+* `u`: ""          - konvertiere den markierten Bereich nach lowercase
+* `U`: "uppercase" - konvertiere den markierten Bereich nach UPPERCASE
 
 Im visuellen Block-Modus gibt es zusätzlich die Möglichkeit in mehreren Zeilen
 gleichzeitig Text einzufügen, indem man zunächst den Block auswählt und dann
@@ -349,24 +371,50 @@ ESC in allen markierten Zeilen eingefügt.
 
 === Macros
 
-* `q<macro>`, `q`: Macro aufnehmen
-* `@<macro>`: Macro ausführen
+Mit Macros lassen sich beliebige komplexe Abfolgen aufzeichnen und wieder abspielen.
+Begonnen wird die Aufzeichnung mit
+
+* `q<macro>`: Starte Aufzeichnung des Macros <macro>
+* `q`       : Beende die Aufzeichnung des Macros
+* `@<macro>`: Führe Macro <macro> aus
+* `<nn>@<macro>`: Führe Macro <macro> <nn> mal aus
 
 === Buffer
 
-* `:ls`: offene Buffer anzeigen
-* `:buffer`: 
-* `:edit <file>`: file zum Edieren öffnen
+VIm verwaltet alle geöffneten Dateien in sogenannten Buffern
+
+* `:ls`: "list" - Zeige alle geöffneten Buffer an
+* `:buffer <nn>`: Aktiviere Buffer <nn>
 
 === Registers
 
-* `:registers`: Registerinhalte anzeigen
+VIm verwaltet zwischengespeicherte Inhalte in sogenannten Registern
+
+* `:registers`: Zeigt alle VIm
+* `"<r>y`: Kopiere ausgewählten Inhalt in das Registers "<r>
+* `"<R>y`: Hänge ausgewählten Inhalt an das Register "<r>
+* `"<r>p`: Füge Inhalt des Registers "<r> ein
+
+[TIP]
+====
+Das System-Clipboard hat unter Linux den Namen '"+', unter Windows den Namen '"*'.
+Letzteres ist unter Linux der Name des Maus-Zwischenspeichers.
+
+Damit diese Register funktionieren, muss die VIm Version speziell für das System
+und den Fenstermanager passen. Sollte das folgende Command 0 zurückgeben, unterstützt
+die aktuelle VIm Version das System-Clipboard nicht. In diesem Fall kann es helfen
+gvim, vim-gtk, u.ä. zu installieren.
+
+ :echo has(clipboard)
+
+====
 
 === Windows
 
-* `:split`: Fenster horizontal splitten
-* `:vsplit`: Fenster vertikal splitten
-* `ctrl-w h`,`j`,`k`,`l`: Zwischen Fenstern wechseln
+* `:split`: Horizontaler Split des aktuellen Fensters
+* `:vsplit`: Vertikaler Split des aktuellen Fensters
+* `ctrl-w h`,`j`,`k`,`l`: Wechsele zwischen den VIm-Fenstern
+* `:ba[ll]` : Zeige jeden Buffer in einem eigenen VIm-Fenster an
 
 === Plugins
 
@@ -381,7 +429,7 @@ siehe https://github.com/VundleVim/Vundle.vim
 Beispielkonfiguration `~/.vimrc`:
 
  set nocompatible
- filetype off 
+ filetype off
  
  set rtp+=~/.vim/bundle/Vundle.vim
  call vundle#begin()
@@ -418,16 +466,16 @@ Beispielkonfiguration `~/.vimrc`:
  Plugin 'vim-scripts/Gist.vim'
  Plugin 'pearofducks/ansible-vim'
  Plugin 'editorconfig/editorconfig-vim'
-
+ 
  call vundle#end()
  filetype plugin indent on
-
+ 
  " Set colorscheme
  set t_Co=256
  set background=dark
  colorscheme solarized
  call togglebg#map("<F5>")
-
+ 
  " Configure statusline
  set statusline+=%#warningmsg#
  set statusline+=%{SyntasticStatuslineFlag()}
@@ -438,10 +486,10 @@ Beispielkonfiguration `~/.vimrc`:
  
  set showbreak=↪\
  set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
-
+ 
  " Configure keymappings
  map <F2> :NERDTreeToggle<CR>
-
+ 
  " Configure properties
  let g:SuperTabDefaultCompletionType = "context"
  let g:syntastic_always_populate_loc_list = 1
