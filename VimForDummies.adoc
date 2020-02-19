@@ -11,7 +11,7 @@ In den Normal-Modus kommt man aus den andern Modi per "ESC"-Taste.
 
 Im Insert-Modus verhält sich VIm wie ein normaler interaktiver Editor:
 Es kann Text eingegeben werden. Im Gegensatz zu VI unterstützt VIm im
-Insert-Modus die Pfeiltasten zum navigieren und Backspace zum löschen.
+Insert-Modus die Pfeiltasten zum Navigieren und Backspace zum löschen.
 
 Aus dem Normal-Modus kommt man in den Insert-Modus u.a. per `i`-Taste.
 
@@ -68,7 +68,7 @@ Die grundlegendsten Befehle zum Navigieren sind:
 * `l`: nach rechts
 
 [TIP]
-Unter VIm funktionieren können auch die Pfeiltasten verwendet werden.
+Unter VIm können auch die Pfeiltasten verwendet werden.
 
 [NOTE]
 ====
@@ -102,7 +102,7 @@ Zeile, Satz, Block und Seite
 ====
 Hier kannst Du es probieren:
 
- w____ w____ e___e w___b ______
+ ____ w____ e___e w___b ______
 
 ====
 
@@ -204,6 +204,7 @@ Hier kannst Du es probieren:
 [TIP]
 ====
 * Ein Wort ist für VIm eine Zeichenfolge ohne Leerzeichen.
+* Ein Satz ist für VIm eine Zeichenfolge vor einem Punkt ".".
 * Ein Block ist für VIm eine Liste von nicht-leeren Zeilen.
 
 ====
@@ -246,7 +247,7 @@ Ein paar hilfreiche Befehle sind:
 * `s/<pattern>/<replacement>/`: "substitute pattern with replacement" - alle pattern durch replace ersetzen
 * `g/<pattern>/d`: "grep pattern delete" - Alle Zeilen löschen, die pattern entsprechen
 * `v/<pattern>/d`: "inVerse pattern delete" - Alle Zeilen löschen, die nicht pattern entsprechen
-* `sort`: Alle Zeilen im Block sortieren
+* `sort`: Alle Zeilen im ausgewählten Bereich sortieren
 * `e`: "edit" - läd die Datei neu
 * `paste`: Wechselt in den Paste-Modus, d.h. kein automatischen Einrücken beim einfügen, etc
 * `nopaste`: Wechselt in den normalen Modus
@@ -269,10 +270,10 @@ den Funktionsnamen ohne Parameterliste:
 
 Befehle, die den Text verändern, also nicht nur die Konfiguration von VIm betreffen,
 beziehen sich im Standardfall auf die aktuelle Zeile. Möchte man mehr als nur die eine
-Zeile bearbeiten, muss man den Block dem Befehl voranstellen (Bsp: `.,+3 g/xx/d` - von
+Zeile bearbeiten, muss man den Bereich dem Befehl voranstellen (Bsp: `.,+3 g/xx/d` - von
 der aktuellen Zeile bis 3 Zeilen danach alle Zeilen löschen in denen xx vorkommt)
 
-* Beispiele für Blockdefinitionen:
+* Beispiele für Bereichsdefinitionen:
 ** `%`: die gesamte Datei
 ** `5,10`: Zeilen 5 bis 10
 ** `.,+50`: die nächsten 50 Zeilen
@@ -281,7 +282,7 @@ der aktuellen Zeile bis 3 Zeilen danach alle Zeilen löschen in denen xx vorkomm
 [NOTE]
 ====
 Stelle den Cursor auf die Zeile START und gib dann ein `:+2,+9 sort`, um die Wörter
-im Block zu sortieren.
+im Bereich zu sortieren.
 
  START:
 
@@ -307,7 +308,7 @@ Verzeichnisses einzufügen:
 
 [NOTE]
 ====
-Stelle den Cursor auf die erste Zeile des folgenden Blocks und gib dann `:.,+4 s/pp/../g`
+Stelle den Cursor auf die erste Zeile des folgenden Bereichs und gib dann `:.,+4 s/pp/../g`
 ein, um alle Vorkommen von pp durch .. zu ersetzten.
 
  ppqppqpqpppq
