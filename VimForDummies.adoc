@@ -67,6 +67,9 @@ Die grundlegendsten Befehle zum Navigieren sind:
 * `k`: nach oben
 * `l`: nach rechts
 
+[TIP]
+Unter VIm funktionieren können auch die Pfeiltasten verwendet werden.
+
 [NOTE]
 ====
 Hier kannst Du sie ausprobieren:
@@ -169,6 +172,8 @@ Hier kannst Du es probieren:
 
 ==== Editieren
 
+* `x`: Zeichen unter dem Cursor löschen, wie `Del`
+* `X`: Zeichen vor dem Cursor löschen, wie `Backspace` im Insert-Modus
 * `y`: "yank" - kopiert in die Zwischenablage
 ** `yy`: kopiert die aktuelle Zeile
 ** `yw`: "yank word" - kopiert bis zum Wortende
@@ -194,8 +199,6 @@ Hier kannst Du es probieren:
 ** `==`: aktuelle Zeile formatieren
 * `gq`: Ausgewählte Zeilen umbrechen
 ** `gqgq`: aktuelle Zeile umbrechen
-* `x`: Zeichen unter dem Cursor löschen
-* `X`: Zeichen vor dem Cursor löschen
 * `J`: Nachfolgende Zeile an aktuelle Zeile anfügen
 
 [TIP]
