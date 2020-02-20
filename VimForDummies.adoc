@@ -200,6 +200,7 @@ Hier kannst Du es probieren:
 * `gq`: Ausgewählte Zeilen umbrechen
 ** `gqgq`: aktuelle Zeile umbrechen
 * `J`: Nachfolgende Zeile an aktuelle Zeile anfügen
+* `.`: Wiederholt den letzten Befehl
 
 [TIP]
 ====
